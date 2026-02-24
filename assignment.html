@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dang ki thong tin</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body{
+            background: rgba(192, 198, 196, 0.73);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+        footer{
+            background: #1e3a8a;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        header .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        header .slogan {
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        header .banner {
+            margin-top: 15px;
+            padding: 10px;
+            background: #2563eb;
+            border-radius: 8px;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .form-group{
+            display: flex;
+            justify-content: center;
+            padding: 2px;
+            margin-top: 5px;
+        }
+
+        p{
+            padding: 5px;
+        }
+        .result{
+
+        }
+        h2{
+            text-align: center;
+            background: red;
+            color : white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        button:hover {
+            background: #858c98;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">LOGO</div>
+    <div class="slogan">SOLOGAN</div>
+    <div class="banner">BANNER</div>
+    <nav>
+
+    </nav>
+</header>
+<main class="form">
+    <div class="container">
+        <form action="/link.submit" method="post" id="Userform">
+            <h2>Đăng kí thông tin người dùng</h2>
+            <p>Họ và tên</p>
+            <div class="form-group">
+                <label for="Username"></label>
+                <input type="text" name ="Username" id="Username" placeholder="Nhập họ tên...">
+                <div class="error" id="errorName"></div>
+            </div>
+            <p>Email</p>
+            <div class="form-group">
+                <label for="email"></label>
+                <input type="email" name ="email" id="email" placeholder="example@gmail.com...">
+                <div class="error" id="errorEmail"></div>
+            </div>
+            <p>Số điện thoại</p>
+            <div class= "form-group">
+                <label for="phone"></label>
+                <input type="text" name ="phone" id="phone" placeholder="09xx...">
+                <div class="error" id="errorPhone"></div>
+            </div>
+            <p>Giới tính</p>
+            <div class= "form-group">
+                <label for="gender"></label>
+                <input type="radio" name="gender" value="Male" id="gender"> Male
+                <input type="radio" name="gender" value="Female"> Female
+                <input type="radio" name="gender" value="Other"> Other
+                <div class="error" id="errorGender"></div>
+            </div>
+            <p>Sở thích</p>
+            <div class= "form-group">
+                <label for="fav"></label>
+                <input type="checkbox" name="fav" value="Thể thao"> Thể thao
+                <input type="checkbox" name="fav" value="Phim ảnh"> Phim ảnh
+                <input type="checkbox" name="fav" value="Đọc sách"> Đọc sách
+                <input type="checkbox" name="fav" value="Âm nhạc"> Âm nhạc
+                <input type="checkbox" name="fav" value="Khác" id="fav"> Khác
+            </div>
+            <h3>Giới thiệu bản thân</h3>
+            <div class = "form-group">
+                <textarea name="gioithieuz" id="gioithieu" cols="50" rows="5"></textarea>
+            </div>
+            <div class = "form-group">
+                <button type="submit">Đăng kí</button>
+            </div>
+        </form>
+        <div id="result" style="display:none;"></div>
+    </div>
+</main>
+<footer>
+    <p>Họ tên : Ngô Bảo Nam</p>
+    <p>Email: baonam.ngo@gmail.com</p>
+    <p>Lớp: T2512E</p>
+</footer>
+<script>
+    const form = document.getElementById('Userform');
+    const resultform = document.getElementById('result');
+
+    function clearErrors() {
+        document.querySelectorAll(".error").forEach(e => e.innerText = "");
+    }
+
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        let isValid = true;
+
+        const name = document.getElementById("Username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const gender = document.querySelector('input[name="gender"]:checked');
+        const fav = document.querySelectorAll('input[type="checkbox"]:checked');
+        const intro = document.getElementById("gioithieu").value.trim();
+
+        if (name === "") {
+            document.getElementById("errorName").innerText = "Họ và tên là bắt buộc.";
+            isValid = false;
+        } else if (name.length > 50) {
+            document.getElementById("errorName").innerText = "Tối đa 50 ký tự.";
+            isValid = false;
+        }
+
+        if (!validateEmail(email)) {
+            document.getElementById("errorEmail").innerText = "Email không đúng định dạng.";
+            isValid = false;
+        }
+
+        if (phone === "") {
+            document.getElementById("errorPhone").innerText = "Phone là bắt buộc.";
+            isValid = false;
+        }
+
+        if (!gender) {
+            document.getElementById("errorGender").innerText = "Vui lòng chọn giới tính.";
+            isValid = false;
+        }
+
+        if (isValid) {
+            const hobbyList = Array.from(fav).map(h => h.value).join(", ");
+
+            form.style.display = "none";
+
+            resultform.style.display = "block";
+            resultform.innerHTML = `
+                <h2>Thông tin đã đăng ký</h2>
+                <p><strong>Họ và tên:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <p><strong>Giới tính:</strong> ${gender.value}</p>
+                <p><strong>Sở thích:</strong> ${hobbyList || "Không có"}</p>
+                <p><strong>Giới thiệu:</strong> ${intro || "Không có"}</p>
+            `;
+        }
+    });
+</script>
+</body>
+</html>
